@@ -1,4 +1,4 @@
-html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -6,115 +6,77 @@ html>
 <title>Typetest</title>
 
 <style>
-body{
+body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background: #f4f4f4;
-    padding: 30px;
+    margin: 40px;
 }
 
-.container{
+textarea, input {
+    width: 80%;
     max-width: 800px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-textarea{
-    width: 100%;
-    height: 120px;
-    padding: 10px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-button{
-    background: #d4001f;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-button:hover{
-    background: black;
-}
-
-#voorbeeld{
-    margin-top: 25px;
-    font-size: 24px;
-    color: #cfcfcf;
-    min-height: 60px;
-}
-
-#invoer{
-    width: 100%;
     padding: 10px;
     font-size: 18px;
-    margin-top: 20px;
-    box-sizing: border-box;
 }
 
-#resultaat{
-    margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
+#voorbeeld {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px;
+    color: lightgray;
+    font-size: 24px;
+    min-height: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 10px;
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Typetest</h1>
+<h1>Typetest</h1>
 
-    <p>Voer hieronder een tekst in:</p>
+<textarea id="bronTekst" placeholder="Voer hier een tekst in"></textarea>
+<br>
 
-    <textarea id="tekst"></textarea>
-    <br>
-    <button onclick="startTest()">Start</button>
+<button onclick="startTest()">Start</button>
 
-    <div id="voorbeeld"></div>
+<div id="voorbeeld"></div>
 
-    <input type="text" id="invoer" placeholder="Typ hier..." disabled>
+<input type="text" id="antwoord" placeholder="Typ hier..." disabled>
 
-    <div id="resultaat"></div>
-</div>
+<h2 id="uitslag"></h2>
 
 <script>
-let startTijd = 0;
-let doelTekst = "";
+let tekst = "";
+let starttijd = 0;
 
-function startTest(){
-    doelTekst = document.getElementById("tekst").value.trim();
+function startTest() {
+    tekst = document.getElementById("bronTekst").value;
 
-    if(doelTekst === ""){
+    if (tekst.trim() === "") {
         alert("Voer eerst een tekst in!");
         return;
     }
 
-    document.getElementById("voorbeeld").textContent = doelTekst;
-    document.getElementById("invoer").value = "";
-    document.getElementById("invoer").disabled = false;
-    document.getElementById("invoer").focus();
-    document.getElementById("resultaat").textContent = "";
+    document.getElementById("voorbeeld").textContent = tekst;
+    document.getElementById("antwoord").value = "";
+    document.getElementById("antwoord").disabled = false;
+    document.getElementById("antwoord").focus();
+    document.getElementById("uitslag").textContent = "";
 
-    startTijd = Date.now();
+    starttijd = Date.now();
 }
 
-document.getElementById("invoer").addEventListener("input", function(){
-    if(this.value === doelTekst){
-        let eindTijd = Date.now();
-        let seconden = ((eindTijd - startTijd) / 1000).toFixed(2);
+document.getElementById("antwoord").addEventListener("input", function() {
+    if (this.value === tekst) {
+        let tijd = ((Date.now() - starttijd) / 1000).toFixed(2);
 
-        document.getElementById("resultaat").textContent =
-            "Klaar! Tijd: " + seconden + " seconden";
-
-        this.disabled = true;
+        document.getElementById("uitslag").textContent =
+            "Je tijd: " + tijd + " seconden!";
     }
 });
 </script>
